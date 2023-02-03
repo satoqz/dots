@@ -72,7 +72,9 @@ has_command less && \
 	export PAGER="less" && \
 	export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
-has_command bat && has_command col > /dev/null 2>&1 && \
+has_command bat && \
+	alias cat="bat" && \
+	has_command col > /dev/null 2>&1 && \
 	export MANPAGER="sh -c 'col -bx | bat --theme=base16 -l man -p'"
 
 has_command lsd && \
