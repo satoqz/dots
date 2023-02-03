@@ -73,7 +73,7 @@ has_command less && \
 	export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
 has_command bat && \
-	alias cat="bat" && \
+	alias cat="bat -p --theme 'Visual Studio Dark+'" && \
 	has_command col > /dev/null 2>&1 && \
 	export MANPAGER="sh -c 'col -bx | bat --theme=base16 -l man -p'"
 
