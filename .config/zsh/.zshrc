@@ -100,7 +100,16 @@ alias gps="git push"
 alias gpu="git push"
 
 if [ "$EUID" = 0 ]; then
-	PS1="%F{red}%n%f@%m %F{green}%16<..<%~%<<% %f # "
+	PROMPT="%F{red}%n%f@%m %F{green}%16<..<%~%<<% %f # "
 else
-	PS1="%n@%m %F{green}%16<..<%~%<<% %f $ "
+	PROMPT="%n@%m %F{green}%16<..<%~%<<% %f $ "
 fi
+
+autoload -Uz vcs_info
+precmd_vcs_info() { vcs_info }
+precmd_functions+=( precmd_vcs_info )
+setopt prompt_subst
+
+RPROMPT='${vcs_info_msg_0_}'
+zstyle ":vcs_info:git:*" check-for-changes true
+zstyle ":vcs_info:git:*" formats "%F{red}%u%c%f %F{blue}(%b)%f"
