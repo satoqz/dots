@@ -83,11 +83,19 @@ has_command htop && \
 	alias top="htop"
 
 has_command tmux && \
-	alias tmux="env TERM=screen=256color tmux"
+	alias tmux="env TERM=screen-256color tmux"
 
 alias cp="cp -v"
 alias rm="rm -v"
 alias mv="mv -v"
+
+alias ga="git add"
+alias gc="git commit"
+alias gs="git status"
+alias gd="git diff"
+alias gf="git fetch"
+alias gps="git push"
+alias gpu="git push"
 
 if [ "$EUID" = 0 ]; then
 	PS1="%F{red}%n%f@%m %F{green}%16<..<%~%<<% %f # "
