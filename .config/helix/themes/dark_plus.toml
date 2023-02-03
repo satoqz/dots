@@ -1,0 +1,25 @@
+inherits = "dark_plus"
+
+["ui.bufferline"]
+bg = "background"
+
+["ui.bufferline.active"]
+bg = "background"
+fg = "light_blue"
+
+["ui.bufferline.background"]
+bg = "background"
+
+["ui.statusline"]
+bg = "background"
+
+["ui.statusline.inactive"]
+bg = "background"
+
+["ui.statusline.insert"]
+bg = "background"
+fg = "light_blue"
+
+["ui.statusline.select"]
+bg = "background"
+fg = "special"

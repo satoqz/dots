@@ -1,0 +1,96 @@
+[[language]]
+name = "c"
+auto-format = true
+
+[[language]]
+name = "cpp"
+file-types = ["cc", "cpp", "cxx", "c++", "cu", "h", "hh", "hpp", "hxx", "h++"]
+auto-format = true
+
+[[language]]
+name = "latex"
+auto-format = true
+
+[language.formatter]
+command = "latexindent"
+args = ["-g", "/dev/null"]
+
+[[language]]
+name = "nix"
+auto-format = true
+
+[language.formatter]
+command = "alejandra"
+
+[[language]]
+name = "python"
+
+[language.config]
+
+[language.language-server]
+command = "pyright-langserver"
+args = ["--stdio"]
+
+[[language]]
+name = "javascript"
+shebangs = ["deno"]
+roots = ["deno.json", "deno.jsonc", "tsconfig.json"]
+auto-format = true
+
+[language.config]
+enable = true
+lint = true
+unstable = true
+
+[language.language-server]
+command = "deno"
+args = ["lsp"]
+language-id = "javascript"
+
+[[language]]
+name = "jsx"
+shebangs = ["deno"]
+roots = ["deno.json", "deno.jsonc", "tsconfig.json"]
+auto-format = true
+
+[language.config]
+enable = true
+lint = true
+unstable = true
+
+[language.language-server]
+command = "deno"
+args = ["lsp"]
+language-id = "javascriptreact"
+
+[[language]]
+name = "tsx"
+shebangs = ["deno"]
+roots = ["deno.json", "deno.jsonc", "tsconfig.json"]
+auto-format = true
+
+[language.config]
+enable = true
+lint = true
+unstable = true
+
+[language.language-server]
+command = "deno"
+args = ["lsp"]
+language-id = "typescriptreact"
+
+[[language]]
+name = "typescript"
+shebangs = ["deno"]
+roots = ["deno.json", "deno.jsonc", "tsconfig.json"]
+auto-format = true
+
+[language.config]
+enable = true
+lint = true
+unstable = true
+
+[language.language-server]
+command = "deno"
+args = ["lsp"]
+language-id = "typescript"

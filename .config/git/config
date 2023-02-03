@@ -1,0 +1,12 @@
+[core]
+	excludesfile = "~/.config/git/ignore"
+
+[credential "https://github.com"]
+	helper = "gh auth git-credential"
+
+[init]
+	defaultBranch = "main"
+
+[user]
+	email = "satoqz@pm.me"
+	name = "satoqz"
