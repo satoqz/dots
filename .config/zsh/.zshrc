@@ -6,6 +6,10 @@ add_path() {
 	[ -d "$1" ] && export PATH="$1:$PATH"
 }
 
+has_command() {
+	command -v "$1" > /dev/null 2>&1
+}
+
 bins=(
 	/nix/var/nix/profiles/default/bin
 	~/.nix-profile/bin
@@ -61,15 +65,29 @@ done
 
 autoload -U compinit && compinit
 
-command -v direnv > /dev/null 2>&1 && \
+has_command direnv && \
 	eval "$(direnv hook zsh)"
 
-command -v less > /dev/null 2>&1 && \
+has_command less && \
 	export PAGER="less" && \
 	export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
-command -v bat > /dev/null 2>&1 && command -v col > /dev/null 2>&1 && \
+has_command bat && has_command col > /dev/null 2>&1 && \
 	export MANPAGER="sh -c 'col -bx | bat --theme=base16 -l man -p'"
+
+has_command lsd && \
+	alias ls="lsd --icon never --almost-all" && \
+	alias la="ls -l"
+
+has_command htop && \
+	alias top="htop"
+
+has_command tmux && \
+	alias tmux="env TERM=screen=256color tmux"
+
+alias cp="cp -v"
+alias rm="rm -v"
+alias mv="mv -v"
 
 if [ "$EUID" = 0 ]; then
 	PS1="%F{red}%n%f@%m %F{green}%16<..<%~%<<% %f # "
