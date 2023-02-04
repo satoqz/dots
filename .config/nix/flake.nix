@@ -15,8 +15,8 @@
         inherit system;
       };
     in rec {
-      packages.env = pkgs.buildEnv {
-        name = "my-environment";
+      packages.tools = pkgs.buildEnv {
+        name = "my-tools";
 
         paths = with pkgs; [
           zsh
@@ -66,7 +66,7 @@
         ];
       };
 
-      packages.default = packages.env;
+      packages.default = packages.tools;
 
       formatter = pkgs.alejandra;
 

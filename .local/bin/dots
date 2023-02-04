@@ -1,2 +1,2 @@
 #!/usr/bin/env sh
-git --work-tree $HOME --git-dir $HOME/.config/dots $@
+git --work-tree $HOME --git-dir $HOME/.config/dots "$@"
