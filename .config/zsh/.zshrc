@@ -33,6 +33,9 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
+export EDITOR="hx"
+export VISUAL="hx"
+
 typeset -U path cdpath fpath manpath
 
 setopt HIST_IGNORE_DUPS
@@ -75,7 +78,7 @@ has_command less && \
 has_command bat && \
 	alias cat="bat -p --theme 'Visual Studio Dark+'" && \
 	has_command col > /dev/null 2>&1 && \
-	export MANPAGER="sh -c 'col -bx | bat --theme=base16 -l man -p'"
+	export MANPAGER="sh -c \"col -bx | bat --theme 'Visual Studio Dark+' -l man -p\""
 
 has_command lsd && \
 	alias ls="lsd --icon never --almost-all" && \
