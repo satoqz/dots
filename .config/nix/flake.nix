@@ -18,42 +18,44 @@
       packages.tools = pkgs.buildEnv {
         name = "my-tools";
 
-        paths = with pkgs; [
-          zsh
-          zsh-syntax-highlighting
-          zsh-autosuggestions
+        paths = with pkgs;
+          [
+            zsh
+            zsh-syntax-highlighting
+            zsh-autosuggestions
 
-          coreutils
-          util-linux
-          man
-          less
-          bat
-          curl
-          wget
-          htop
-          lsd
-          fzf
-          ripgrep
-          neofetch          
+            coreutils
+            util-linux
+            man
+            less
+            bat
+            curl
+            wget
+            htop
+            lsd
+            fzf
+            ripgrep
+            neofetch
 
-          helix
-          tmux
+            helix
+            tmux
 
-          git
-          gitui
-          gh
+            git
+            gitui
+            gh
 
-          direnv
-          nix-direnv
-        ] ++ lib.optionals stdenv.isDarwin [
-          docker-client
-          docker-compose
+            direnv
+            nix-direnv
+          ]
+          ++ lib.optionals stdenv.isDarwin [
+            docker-client
+            docker-compose
 
-          lima-bin
-          (colima.override {
-            lima = lima-bin;
-          })
-        ];
+            lima-bin
+            (colima.override {
+              lima = lima-bin;
+            })
+          ];
 
         pathsToLink = [
           "/share"
@@ -67,6 +69,17 @@
       };
 
       packages.default = packages.tools;
+
+      packages.nix-path = pkgs.buildEnv {
+        name = "my-nix-path";
+
+        paths = lib.singleton (pkgs.runCommand "nixpkgs-symlink" {} ''
+          mkdir -p $out/etc
+          ln -s ${nixpkgs} $out/etc/nixpkgs
+        '');
+
+        pathsToLink = "/etc/nixpkgs";
+      };
 
       formatter = pkgs.alejandra;
 
