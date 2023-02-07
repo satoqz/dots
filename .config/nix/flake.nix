@@ -1,18 +1,35 @@
 {
   inputs = {
-    nixpkgs.url = "nixpkgs/nixpkgs-unstable";
+    nixpkgs.url = "github:NixOS/nixpkgs/nixpkgs-unstable";
+
     utils.url = "github:numtide/flake-utils";
+
+    helix.url = "github:helix-editor/helix";
+
+    niks = {
+      url = "github:satoqz/niks";
+      inputs = {
+        nixpkgs.follows = "nixpkgs";
+        flake-utils.follows = "utils";
+      };
+    };
   };
 
   outputs = {
     self,
     nixpkgs,
     utils,
-  }:
+    ...
+  } @ inputs:
     utils.lib.eachDefaultSystem (system: let
       inherit (nixpkgs) lib;
+
       pkgs = import nixpkgs {
         inherit system;
+      };
+
+      flakes = builtins.mapAttrs (_: flake: flake.packages.${system}.default) {
+        inherit (inputs) helix niks;
       };
     in rec {
       packages.tools = pkgs.buildEnv {
@@ -26,18 +43,21 @@
 
             coreutils
             util-linux
+
+            htop
+            bat
+            lsd
+
             man
             less
-            bat
+
             curl
             wget
-            htop
-            lsd
-            fzf
-            ripgrep
-            neofetch
 
-            helix
+            ripgrep
+            fzf
+
+            flakes.helix
             tmux
 
             git
@@ -46,6 +66,10 @@
 
             direnv
             nix-direnv
+
+            flakes.niks
+
+            neofetch
           ]
           ++ lib.optionals stdenv.isDarwin [
             docker-client
@@ -90,4 +114,15 @@
         ];
       };
     });
+
+  nixConfig = {
+    extra-substituters = [
+      "https://systems.cachix.org"
+      "https://helix.cachix.org"
+    ];
+    extra-trusted-public-keys = [
+      "systems.cachix.org-1:w+BPDlm25/PkSE0uN9uV6u12PNmSsBuR/HW6R/djZIc="
+      "helix.cachix.org-1:ejp9KQpR1FBI2onstMQ34yogDm4OgU2ru6lIwPvuCVs="
+    ];
+  };
 }
