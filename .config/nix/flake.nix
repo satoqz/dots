@@ -15,23 +15,18 @@
     };
   };
 
-  outputs = {
-    self,
-    nixpkgs,
-    utils,
-    ...
-  } @ inputs:
-    utils.lib.eachDefaultSystem (system: let
+  outputs = { self, nixpkgs, utils, ... }@inputs: utils.lib.eachDefaultSystem (system:
+    let
       inherit (nixpkgs) lib;
 
-      pkgs = import nixpkgs {
-        inherit system;
-      };
+      pkgs = import nixpkgs { inherit system; };
 
-      flakes = builtins.mapAttrs (_: flake: flake.packages.${system}.default) {
-        inherit (inputs) helix niks;
-      };
-    in rec {
+      flakes =
+        builtins.mapAttrs (_: flake: flake.packages.${system}.default) {
+          inherit (inputs) helix niks;
+        };
+    in
+    rec {
       packages.tools = pkgs.buildEnv {
         name = "my-tools";
 
@@ -70,26 +65,17 @@
             flakes.niks
 
             neofetch
-          ]
-          ++ lib.optionals stdenv.isDarwin [
+          ] ++ lib.optionals stdenv.isDarwin [
             docker-client
             docker-compose
 
             lima-bin
-            (colima.override {
-              lima = lima-bin;
-            })
+            (colima.override { lima = lima-bin; })
           ];
 
-        pathsToLink = [
-          "/share"
-          "/bin"
-        ];
+        pathsToLink = [ "/share" "/bin" ];
 
-        extraOutputsToInstall = [
-          "man"
-          "doc"
-        ];
+        extraOutputsToInstall = [ "man" "doc" ];
       };
 
       packages.default = packages.tools;
@@ -97,7 +83,7 @@
       packages.nix-path = pkgs.buildEnv {
         name = "my-nix-path";
 
-        paths = lib.singleton (pkgs.runCommand "nixpkgs-symlink" {} ''
+        paths = lib.singleton (pkgs.runCommand "nixpkgs-symlink" { } ''
           mkdir -p $out/etc
           ln -s ${nixpkgs} $out/etc/nixpkgs
         '');
@@ -105,14 +91,7 @@
         pathsToLink = "/etc/nixpkgs";
       };
 
-      formatter = pkgs.alejandra;
-
-      devShells.default = pkgs.mkShell {
-        packages = [
-          formatter
-          pkgs.nil
-        ];
-      };
+      formatter = pkgs.nixpkgs-fmt;
     });
 
   nixConfig = {

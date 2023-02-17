@@ -14,7 +14,7 @@ auto-format = true
 
 [[language]]
 name = "nix"
-formatter = { command = "alejandra" }
+formatter = { command = "nixpkgs-fmt" }
 auto-format = true
 
 [[language]]
