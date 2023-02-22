@@ -11,21 +11,18 @@ has_command() {
 }
 
 bins=(
-	/nix/var/nix/profiles/default/bin
-	~/.nix-profile/bin
 	/opt/homebrew/bin
 	~/.local/bin
 	~/.deno/bin
 	~/.cargo/bin
 	~/go/bin
-	~/Library/Python/3.9/bin
+	~/.local/share/yarn/global/node_modules/.bin
 )
 
 shares=(
 	/usr/share
 	/usr/local/share
-	/nix/var/nix/profiles/default/share
-	~/.nix-profile/share
+	/opt/homebrew/share
 )
 
 export XDG_CACHE_HOME="$HOME/.cache"
@@ -59,6 +56,8 @@ for share in "${shares[@]}"; do
 
 	source_optional "$share/zsh-autosuggestions/zsh-autosuggestions.zsh"
 	source_optional "$share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
+	source_optional "$share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh"
+	source_optional "$share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh"
 
 	source_optional "$share/fzf/completion.zsh"
 	source_optional "$share/fzf/key-binddings.zsh"
@@ -67,9 +66,6 @@ for share in "${shares[@]}"; do
 done
 
 autoload -U compinit && compinit
-
-has_command direnv && \
-	eval "$(direnv hook zsh)"
 
 has_command less && \
 	export PAGER="less" && \
@@ -93,14 +89,6 @@ has_command tmux && \
 alias cp="cp -v"
 alias rm="rm -v"
 alias mv="mv -v"
-
-alias ga="git add"
-alias gc="git commit"
-alias gs="git status"
-alias gd="git diff"
-alias gf="git fetch"
-alias gps="git push"
-alias gpu="git push"
 
 if [ "$EUID" = 0 ]; then
 	PROMPT="%F{red}%n%f@%m %F{green}%16<..<%~%<<% %f # "
