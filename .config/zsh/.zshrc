@@ -16,7 +16,6 @@ bins=(
 	~/.deno/bin
 	~/.cargo/bin
 	~/go/bin
-	~/.local/share/yarn/global/node_modules/.bin
 )
 
 shares=(
@@ -32,6 +31,8 @@ export XDG_STATE_HOME="$HOME/.local/state"
 
 export EDITOR="hx"
 export VISUAL="hx"
+
+[ -d "/opt/homebrew" ] && export HOMEBREW_NO_ENV_HINTS=1
 
 typeset -U path cdpath fpath manpath
 
