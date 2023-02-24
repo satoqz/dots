@@ -7,7 +7,7 @@ add_path() {
 }
 
 has_command() {
-	command -v "$1" > /dev/null 2>&1
+	command -v "$1" >/dev/null 2>&1
 }
 
 bins=(
@@ -29,8 +29,8 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
 
-export EDITOR="hx"
-export VISUAL="hx"
+export EDITOR="vim"
+export VISUAL="$EDITOR"
 
 [ -d "/opt/homebrew" ] && export HOMEBREW_NO_ENV_HINTS=1
 
@@ -52,7 +52,7 @@ for bin in "${bins[@]}"; do
 done
 
 for share in "${shares[@]}"; do
-	[ -d "$share/zsh" ] && \
+	[ -d "$share/zsh" ] &&
 		fpath+=("$share/zsh/site-functions" "$share/zsh/$ZSH_VERSION/functions" "/usr/share/zsh/vendor-completions")
 
 	source_optional "$share/zsh-autosuggestions/zsh-autosuggestions.zsh"
@@ -68,23 +68,23 @@ done
 
 autoload -U compinit && compinit
 
-has_command less && \
-	export PAGER="less" && \
+has_command less &&
+	export PAGER="less" &&
 	export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
-has_command bat && \
-	alias cat="bat -p --theme 'Visual Studio Dark+'" && \
-	has_command col > /dev/null 2>&1 && \
+has_command bat &&
+	alias cat="bat -p --theme 'Visual Studio Dark+'" &&
+	has_command col >/dev/null 2>&1 &&
 	export MANPAGER="sh -c \"col -bx | bat --theme 'Visual Studio Dark+' -l man -p\""
 
-has_command lsd && \
-	alias ls="lsd --icon never --almost-all" && \
+has_command lsd &&
+	alias ls="lsd --icon never --almost-all" &&
 	alias la="ls -l"
 
-has_command htop && \
+has_command htop &&
 	alias top="htop"
 
-has_command tmux && \
+has_command tmux &&
 	alias tmux="env TERM=screen-256color tmux"
 
 alias cp="cp -v"
@@ -98,8 +98,10 @@ else
 fi
 
 autoload -Uz vcs_info
-precmd_vcs_info() { vcs_info }
-precmd_functions+=( precmd_vcs_info )
+precmd_vcs_info() {
+	vcs_info
+}
+precmd_functions+=(precmd_vcs_info)
 setopt prompt_subst
 
 RPROMPT='${vcs_info_msg_0_}'
