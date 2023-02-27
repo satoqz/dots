@@ -14,7 +14,8 @@ export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
 export XDG_STATE_HOME="$HOME/.local/state"
-export XDG_RUNTIME_DIR="/run/user/$UID"
+
+[ "$(uname)" = "Linux" ] && export XDG_RUNTIME_DIR="/run/user/$UID"
 
 export DOCKER_CONFIG="$XDG_DATA_HOME/docker"
 export CARGO_HOME="$XDG_DATA_HOME/cargo"
@@ -31,7 +32,7 @@ export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 bins=(
 	"/opt/homebrew/bin"
-	"~/.local/bin"
+	"$HOME/.local/bin"
 	"$DENO_INSTALL_ROOT"
 	"$CARGO_HOME/bin"
 	"$GOPATH/bin"

@@ -18,7 +18,7 @@ syntax on
 set termguicolors
 set number
 
-set clipboard=unnamedplus
+set clipboard=unnamed
 
 set smartcase
 set hlsearch
