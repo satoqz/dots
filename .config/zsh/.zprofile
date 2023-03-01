@@ -1,19 +1,3 @@
-add_path() {
-	[ -d "$1" ] && export PATH="$1:$PATH"
-}
-
-bins=(
-	"/opt/homebrew/bin"
-	"$HOME/.local/bin"
-	"$DENO_INSTALL_ROOT"
-	"$CARGO_HOME/bin"
-	"$GOPATH/bin"
-)
-
-for bin in "${bins[@]}"; do
-	add_path "$bin"
-done
-
 export XDG_CACHE_HOME="$HOME/.cache"
 export XDG_CONFIG_HOME="$HOME/.config"
 export XDG_DATA_HOME="$HOME/.local/share"
@@ -39,3 +23,19 @@ export VISUAL="$EDITOR"
 export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
 
 [ -d "/opt/homebrew" ] && export HOMEBREW_NO_ENV_HINTS=1
+
+add_path() {
+	[ -d "$1" ] && export PATH="$1:$PATH"
+}
+
+bins=(
+	"/opt/homebrew/bin"
+	"$HOME/.local/bin"
+	"$DENO_INSTALL_ROOT"
+	"$CARGO_HOME/bin"
+	"$GOPATH/bin"
+)
+
+for bin in "${bins[@]}"; do
+	add_path "$bin"
+done
