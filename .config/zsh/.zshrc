@@ -1,3 +1,7 @@
+add_path() {
+	[ -d "$1" ] && export PATH="$1:$PATH"
+}
+
 source_optional() {
 	[ -f "$1" ] && source "$1"
 }
@@ -6,11 +10,23 @@ has_command() {
 	command -v "$1" >/dev/null 2>&1
 }
 
-shares=(
-	"/usr/share"
-	"/usr/local/share"
-	"/opt/homebrew/share"
-)
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+export DOCKER_CONFIG="$XDG_DATA_HOME/docker"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export GOPATH="$XDG_DATA_HOME/go"
+export DENO_INSTALL_ROOT="$XDG_DATA_HOME/deno/bin"
+
+export EDITOR="vim"
+export VISUAL="$EDITOR"
+
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+
+[ -d "/opt/homebrew" ] && export HOMEBREW_NO_ENV_HINTS=1
 
 typeset -U path cdpath fpath manpath
 
@@ -24,6 +40,24 @@ HISTFILE="$XDG_STATE_HOME/zsh/history"
 mkdir -p $(dirname $HISTFILE)
 
 setopt autocd
+
+bins=(
+	"/opt/homebrew/bin"
+	"$HOME/.local/bin"
+	"$DENO_INSTALL_ROOT"
+	"$CARGO_HOME/bin"
+	"$GOPATH/bin"
+)
+
+shares=(
+	"/usr/share"
+	"/usr/local/share"
+	"/opt/homebrew/share"
+)
+
+for bin in "${bins[@]}"; do
+	add_path "$bin"
+done
 
 for share in "${shares[@]}"; do
 	[ -d "$share/zsh" ] &&
