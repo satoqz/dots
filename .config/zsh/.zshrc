@@ -1,3 +1,38 @@
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
+
+export DOCKER_CONFIG="$XDG_DATA_HOME/docker"
+export CARGO_HOME="$XDG_DATA_HOME/cargo"
+export RUSTUP_HOME="$XDG_DATA_HOME/rustup"
+export GOPATH="$XDG_DATA_HOME/go"
+export DENO_INSTALL_ROOT="$XDG_DATA_HOME/deno/bin"
+
+export EDITOR="vim"
+export VISUAL="vim"
+
+export VIMINIT='let $MYVIMRC="$XDG_CONFIG_HOME/vim/vimrc" | source $MYVIMRC'
+
+shares=(
+	"/usr/share"
+	"/usr/local/share"
+	"/opt/homebrew/share"
+)
+
+bins=(
+	"/opt/homebrew/bin"
+	"$HOME/.local/bin"
+	"$HOME/.local/share/yarn/global/node_modules/.bin"
+	"$DENO_INSTALL_ROOT"
+	"$CARGO_HOME/bin"
+	"$GOPATH/bin"
+)
+
+add_path() {
+	[ -d "$1" ] && export PATH="$1:$PATH"
+}
+
 source_optional() {
 	[ -f "$1" ] && source "$1"
 }
@@ -6,24 +41,9 @@ has_command() {
 	command -v "$1" >/dev/null 2>&1
 }
 
-shares=(
-	"/usr/share"
-	"/usr/local/share"
-	"/opt/homebrew/share"
-)
-
-typeset -U path cdpath fpath manpath
-
-setopt HIST_IGNORE_DUPS
-setopt HIST_IGNORE_SPACE
-
-HISTSIZE=10000
-SAVEHIST=10000
-
-HISTFILE="$XDG_STATE_HOME/zsh/history"
-mkdir -p $(dirname $HISTFILE)
-
-setopt autocd
+for bin in "${bins[@]}"; do
+	add_path "$bin"
+done
 
 for share in "${shares[@]}"; do
 	[ -d "$share/zsh" ] &&
@@ -40,6 +60,21 @@ for share in "${shares[@]}"; do
 	[ -d "$share/man" ] && export MANPATH="$MANPATH:$share/man"
 done
 
+typeset -U path cdpath fpath manpath
+
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+
+HISTSIZE=10000
+SAVEHIST=10000
+
+HISTFILE="$XDG_STATE_HOME/zsh/history"
+mkdir -p $(dirname $HISTFILE)
+
+setopt autocd
+
+[ -d "/opt/homebrew" ] && export HOMEBREW_NO_ENV_HINTS=1
+
 autoload -U compinit && compinit
 
 has_command less &&
@@ -47,9 +82,9 @@ has_command less &&
 	export LESSHISTFILE="$XDG_CACHE_HOME/less/history"
 
 has_command bat &&
-	alias cat="bat -p --theme 'Visual Studio Dark+'" &&
+	alias cat="bat -p --theme ansi" &&
 	has_command col >/dev/null 2>&1 &&
-	export MANPAGER="sh -c \"col -bx | bat --theme 'Visual Studio Dark+' -l man -p\""
+	export MANPAGER="sh -c 'col -bx | bat --theme ansi -l man -p'"
 
 has_command lsd &&
 	alias ls="lsd --icon never --almost-all" &&
@@ -60,7 +95,7 @@ has_command htop &&
 
 has_command tmux &&
 	alias tmux="env TERM=screen-256color tmux"
-
+ 
 alias cp="cp -v"
 alias rm="rm -v"
 alias mv="mv -v"

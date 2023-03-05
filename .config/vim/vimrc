@@ -17,7 +17,6 @@ syntax on
 set termguicolors
 set number
 set laststatus=1
-set fillchars+=eob:\ 
 
 set clipboard=unnamed
 
@@ -52,3 +51,4 @@ noremap <leader>h :wincmd h<CR>
 noremap <leader>j :wincmd j<CR> 
 noremap <leader>k :wincmd k<CR> 
 noremap <leader>l :wincmd l<CR> 
+
